@@ -10,3 +10,4 @@ function checkStringOddEven(str){
 
 console.log(checkNumber(10));
 console.log(checkStringOddEven('hello'));
+// 2021-01-15 node 교과서 
