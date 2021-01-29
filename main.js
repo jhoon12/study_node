@@ -1,8 +1,19 @@
-let fs = require("fs");
+let events = require('events');
 
-fs.readFile('input.txt', function(err, data){
-   if(err) return console.error(err);
-   console.log(data.toString());
-});
+let eventEmitter = new events.EventEmitter()
 
-console.log("Program has ended");
+let connectHandler = () => {
+    console.log('Connection successfull');
+
+    eventEmitter.emit("data_received");
+}
+
+eventEmitter.on('connection', connectHandler);
+
+eventEmitter.on('data_received', function(){
+    console.log('Data Received');
+})
+
+eventEmitter.emit('connection');
+
+console.log("Program has ended")
