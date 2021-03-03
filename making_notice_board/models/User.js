@@ -35,3 +35,9 @@ userSchema.virtual('currentPassword')
 userSchema.virtual('newPassword')
   .get(function(){ return this._newPassword; })
   .set(function(value){ this._newPassword=value; });
+
+userSchema.path('password').validate(function(v){
+  let user = this;
+
+}) 
+
