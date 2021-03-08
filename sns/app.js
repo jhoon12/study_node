@@ -30,7 +30,7 @@ app.use(session({
     },
 }));
 
-app.use('/', ppageRouter);
+app.use('/', pageRouter);
 
 app.use((req,res,next)=>{
     const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
