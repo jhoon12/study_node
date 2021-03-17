@@ -1,9 +1,13 @@
 const express = require("express");
-const {sequelize} = require('./models');
+const { sequelize } = require("./models");
 
 const app = express();
 
-app.use(express.json()); 
-app.use(express.urlencoded( {extended : false } ));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use("/", require("./routes/index"))
+sequelize.sync();
+
+app.use("/", require("./routes/index"));
+
+module.exports = app;
