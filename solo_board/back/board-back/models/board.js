@@ -4,12 +4,12 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING(20),
       allowNULL: false,
     },
-    todoID: {
+    todoIDsasaPP: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
     isDone: {
-      type: Boolean,
+      type: DataTypes.BOOLEAN,
     },
   });
