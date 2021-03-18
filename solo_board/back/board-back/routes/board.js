@@ -2,6 +2,8 @@ var express = require("express");
 var router = require("express").Router();
 const { board } = require("../models");
 
+
+
 router.get("/", async (req, res, next) => {
   const boardData = await board.findAll();
   res.json(boardData);
