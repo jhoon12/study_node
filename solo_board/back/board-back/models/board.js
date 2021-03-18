@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) =>
       type: DataTypes.STRING(20),
       allowNULL: false,
     },
-    todoIDsasaPP: {
+    todoID: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
