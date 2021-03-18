@@ -12,6 +12,7 @@ interface ToDoInterface {
 function App() {
   const [todo, setToDo] = useState<ToDoInterface[]>([]);
   const [input, setInput] = useState<string>("");
+  const [socket, setSocket] = useState<boolean>(false);
   useEffect(() => {
     try {
       (async () => {
@@ -19,22 +20,32 @@ function App() {
           "http://10.156.145.168/board"
         );
         setToDo(data);
+        setSocket(false)
       })();
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [socket]);//todo 넣으면 무한루프
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
   const addToDo = async () => {
     try {
+      setInput('');
       const res = await axios.post("http://10.156.145.168/board/todo", {
         todo: input,
         isDone: false,
       });
+      setSocket(true);
     } catch (err) {}
   };
+  const removeToDo = async (id: number) => {
+    try{
+      const res = await axios.delete("http://10.156.145.168/board/delete",{
+        id: id
+      })
+    }
+  }
   return (
     <>
       <S.GlobalStyle />
@@ -46,7 +57,14 @@ function App() {
         </S.InputBox>
         <ul>
           {todo.map((ele) => {
-            return <li>{ele.todo}</li>;
+            return(
+              <S.FlexToDo>
+                <li>{ele.todo}</li>
+                <button >삭제</button>
+                <button>수정</button>
+              </S.FlexToDo>
+            )
+           
           })}
         </ul>
       </S.MainBox>

@@ -40,7 +40,7 @@ export const Btn = styled.button`
     
 `
 
-// export const body = `
-    
-// `;
-
+export const FlexToDo = styled.div`
+    width:100%;
+    display:flex;
+`
