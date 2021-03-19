@@ -8,11 +8,19 @@ interface ToDoInterface {
   todoID: number;
   isDone: boolean;
 }
+interface EditInterface {
+  todo: string;
+  id: number;
+}
 
 function App() {
   const [todo, setToDo] = useState<ToDoInterface[]>([]);
   const [input, setInput] = useState<string>("");
   const [socket, setSocket] = useState<boolean>(false);
+  const [editState, setEditState] = useState<EditInterface>({
+    todo: "",
+    id: 0,
+  });
   useEffect(() => {
     try {
       (async () => {
@@ -20,18 +28,18 @@ function App() {
           "http://10.156.145.168/board"
         );
         setToDo(data);
-        setSocket(false)
+        setSocket(false);
       })();
     } catch (err) {
       console.log(err);
     }
-  }, [socket]);//todo 넣으면 무한루프
+  }, [socket]); //todo 넣으면 무한루프
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
   const addToDo = async () => {
     try {
-      setInput('');
+      setInput("");
       const res = await axios.post("http://10.156.145.168/board/todo", {
         todo: input,
         isDone: false,
@@ -40,12 +48,29 @@ function App() {
     } catch (err) {}
   };
   const removeToDo = async (id: number) => {
-    try{
-      const res = await axios.delete("http://10.156.145.168/board/delete",{
-        id: id
-      })
-    }
-  }
+    try {
+      const res = await axios.delete("http://10.156.145.168/board/delete", {
+        data: {
+          id: id,
+        },
+      });
+      setSocket(true);
+    } catch (err) {}
+  };
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await axios.post("http://10.156.145.168/board/edit", {
+          todo: editState.todo,
+          id: editState.id,
+        });
+        setSocket(true);
+      } catch (err) {}
+    })();
+  }, [editState]);
+  const editToDo = async (id: number) => {
+    setEditState({ todo: prompt("변경할 값", "") as string, id: id });
+  };
   return (
     <>
       <S.GlobalStyle />
@@ -57,14 +82,13 @@ function App() {
         </S.InputBox>
         <ul>
           {todo.map((ele) => {
-            return(
+            return (
               <S.FlexToDo>
                 <li>{ele.todo}</li>
-                <button >삭제</button>
-                <button>수정</button>
+                <button onClick={() => removeToDo(ele.todoID)}>삭제</button>
+                <button onClick={() => editToDo(ele.todoID)}>수정</button>
               </S.FlexToDo>
-            )
-           
+            );
           })}
         </ul>
       </S.MainBox>
