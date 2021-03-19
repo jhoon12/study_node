@@ -41,6 +41,6 @@ export const Btn = styled.button`
 `
 
 export const FlexToDo = styled.div`
-    width:100%;
+    /* width:100%; */
     display:flex;
 `
